@@ -15,4 +15,8 @@ def load_data():
 
 df = load_data()
 
+# title
 st.title("Mental Health Dataset")
+
+# convert from object to datetime
+df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors='coerce') 
