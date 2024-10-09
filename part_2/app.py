@@ -20,3 +20,6 @@ st.title("Mental Health Dataset")
 
 # convert from object to datetime
 df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors='coerce') 
+
+# checks how many missing values are in each column 
+st.write(df.isna().sum())
