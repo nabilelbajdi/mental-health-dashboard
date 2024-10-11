@@ -80,5 +80,5 @@ with tab2:
 with tab3:
     st.header("Mental Health Indicators")
     st.write("""
-    family history... days indoors... growing stress... etc.
+    family history... days indoors... growing stress... etc..
     """)
