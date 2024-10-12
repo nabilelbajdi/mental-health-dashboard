@@ -119,3 +119,23 @@ with tab3:
                                         "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
     st.plotly_chart(fig_family_history, use_container_width=True)
+
+    # A heatmap showing the relationship between days spent indoors and coping struggles.
+    response_by_days_indoors = df.groupby(["Days_Indoors", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
+    fig_indoors_coping = px.density_heatmap(response_by_days_indoors,
+                                            x="Days_Indoors",
+                                            y="Coping_Struggles",
+                                            z="Total_Responses",
+                                            title="Relationship between Days Spent Indoors and Coping Struggles")
+    st.plotly_chart(fig_indoors_coping, use_container_width=True)
+
+    # Changes in Habits and Mental Health: A stacked bar chart showing how people who reported habit changes also report mental health issues.
+    response_by_habit_changes = df.groupby(["Changes_Habits", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
+    fig_habit_changes = px.bar(response_by_habit_changes,
+                                x="Changes_Habits",
+                                y="Total_Responses",
+                                color="Coping_Struggles",
+                                title="Changes in Habits and Coping Struggles",
+                                labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"},
+                                barmode="stack")
+    st.plotly_chart(fig_habit_changes, use_container_width=True)
