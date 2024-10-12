@@ -64,22 +64,22 @@ with tab2:
     """)
     
     # Gender distribution pie chart of responses
-    response_by_gender = df["Gender"].value_counts()
-    fig_gender = px.pie(response_by_gender, 
-                 names=response_by_gender.index, 
-                 values=response_by_gender.values, 
+    response_by_gender = df.groupby("Gender").size().reset_index(name="Total_Responses")
+    fig_gender = px.pie(response_by_gender,
+                 names="Gender",
+                 values="Total_Responses",
                  title="Gender Distribution of Respondents")
     st.plotly_chart(fig_gender, use_container_width=True)
 
     # Country distribution choropleth map of responses
     response_by_country = df.groupby("Country").size().reset_index(name="Total_Responses")
-    fig_map = px.choropleth(response_by_country, 
-                            locations="Country", 
-                            locationmode="country names", 
-                            color="Total_Responses", 
+    fig_map = px.choropleth(response_by_country,
+                            locations="Country",
+                            locationmode="country names",
+                            color="Total_Responses",
                             hover_name="Country",
                             color_continuous_scale=px.colors.sequential.Viridis,
-                            title="Global Distribution of Respondents")
+                            title="Country Distribution of Respondents")
     st.plotly_chart(fig_map, use_container_width=True)
 
 with tab3:
