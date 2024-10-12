@@ -91,8 +91,31 @@ with tab2:
                             labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_occupation, use_container_width=True)
 
+    # Self-Employed vs Non-Self-Employed
+    df_filtered = df[df["self_employed"] != "Not specified"]
+    response_by_self_employment = df_filtered.groupby("self_employed").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
+    fig_self_employed = px.bar(response_by_self_employment,
+                               x="self_employed",
+                               y="Total_Responses",
+                               title="Comparison of Self-Employed vs Non-Self-Employed Respondents",
+                               labels={"self_employed": "Self-Employed Status", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_self_employed, use_container_width=True)
+
 with tab3:
     st.header("Mental Health Indicators")
     st.write("""
     family history... days indoors... growing stress... etc..
     """)
+
+    # Family history of mental illness and seeking treatment correlation
+    response_by_family_history = df.groupby(["family_history", "treatment"]).size().reset_index(name="Total_Responses")
+    fig_family_history = px.bar(response_by_family_history,
+                                x="family_history",
+                                y="Total_Responses",
+                                color="treatment",
+                                title="Family History of Mental Illness and Seeking Treatment Correlation",
+                                labels={"family_history": "Family History of Mental Illness", 
+                                        "treatment": "Seeking Treatment",
+                                        "Total_Responses": "Number of Respondents"},
+                                barmode="stack")
+    st.plotly_chart(fig_family_history, use_container_width=True)
