@@ -82,6 +82,15 @@ with tab2:
                             title="Country Distribution of Respondents")
     st.plotly_chart(fig_map, use_container_width=True)
 
+    # Occupation distribution bar chart of responses
+    response_by_occupation = df.groupby("Occupation").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
+    fig_occupation = px.bar(response_by_occupation,
+                            x="Occupation",
+                            y="Total_Responses",
+                            title="Occupation Distribution of Respondents",
+                            labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_occupation, use_container_width=True)
+
 with tab3:
     st.header("Mental Health Indicators")
     st.write("""
