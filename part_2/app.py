@@ -158,3 +158,23 @@ with tab3:
                         values="Total_Responses",
                         title="Respondents Who Have Had Mental Health Interviews")
     st.plotly_chart(fig_interview, use_container_width=True)
+
+    # Stress levels vs occupation
+    response_by_occupation_struggles = df.groupby(["Occupation", "Growing_Stress"]).size().reset_index(name="Total_Responses")
+    fig_occupation_struggles = px.bar(response_by_occupation_struggles,
+                                        x="Occupation",
+                                        y="Total_Responses",
+                                        color="Growing_Stress",
+                                        title="Occupations and Growing Stress Correlation",
+                                        labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"},
+                                        barmode="group")
+    st.plotly_chart(fig_occupation_struggles, use_container_width=True)
+
+    # Family history vs mood swings
+    response_by_family_mood_swings = df.groupby(["family_history", "Mood_Swings"]).size().reset_index(name="Total_Responses")
+    fig_family_mood_swings = px.bar(response_by_family_mood_swings,
+                                    x="family_history",
+                                    y="Total_Responses",
+                                    color="Mood_Swings",
+                                    title="Family History and Mood Swings Correlation")
+    st.plotly_chart(fig_family_mood_swings, use_container_width=True)
