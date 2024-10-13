@@ -192,7 +192,7 @@ with tab3:
 
     # Regional Differences in Coping Struggles
     response_by_country_coping = df[df["Coping_Struggles"] == "Yes"].groupby("Country").size().reset_index(name="Total_Responses")
-    top_10_countries = response_by_country_coping.sort_values(by='Total_Responses', ascending=False).head(10)
+    top_10_countries = response_by_country_coping.sort_values(by="Total_Responses", ascending=False).head(10)
     fig_country_coping = px.choropleth(response_by_country_coping,
                                        locations="Country",
                                        locationmode="country names",
@@ -201,3 +201,21 @@ with tab3:
                                        color_continuous_scale=px.colors.sequential.Viridis,
                                        title="Regional Differences in Coping Struggles")
     st.plotly_chart(fig_country_coping, use_container_width=True)
+
+    # Complementary bar chart showing the top 10 countries struggling
+    fig_top_5_countries = px.bar(top_10_countries,
+                    x="Country", 
+                    y="Total_Responses",  
+                    title="Top 10 Countries with Highest Coping Struggles",
+                    labels={"Country": "Country", "Total_Responses": "Number of Struggles"})
+    st.plotly_chart(fig_top_5_countries, use_container_width=True)
+
+    # Occupations with the Highest Stress Levels
+    response_by_occupation_stress = df[df["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
+    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
+    fig_occupation_stress = px.bar(response_by_occupation_stress,
+                                    x="Total_Responses",
+                                    y="Occupation",
+                                    title="Occupations with the Highest Stress Levels",
+                                    labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
+    st.plotly_chart(fig_occupation_stress, use_container_width=True)
