@@ -1,16 +1,15 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-import numpy as np 
 
-# page config
+# Page Configuration
 st.set_page_config(
     page_title="Mental Health Dataset Analysis",
     layout="wide",
     page_icon="brain"
 )
 
-# load the data
+# Load Mental Health Dataset
 @st.cache_data
 def load_data():
     df = pd.read_csv("Mental Health Dataset.csv")
@@ -22,33 +21,27 @@ def load_data():
 
 df = load_data()
 
-# title
+# Title and Description
 st.title("Mental Health Dataset Analysis")
 st.write("""
-Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health indicators across various factors such as gender, occupation, and treatment status.
+Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insight across various factors such as gender, occupation, and treatment status.
 Use the tabs above to navigate through different sections.
 """)
 
-# convert from object to datetime
+# Data Cleaning
 df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce") 
-
-# clean self_employed None value data
 df["self_employed"] = df["self_employed"].fillna("Not specified")
-
-# clean care_options standardize "Maybe"
 df["care_options"] = df["care_options"].replace("Not sure", "Maybe")
 
-#__________Visualization__________"
+#------------ Visualization ------------
 
-tab1, tab2, tab3 = st.tabs(["Data Overview", "Survey Demographics", "Mental Health Indicators"])
+tab1, tab2, tab3 = st.tabs(["Data Overview", "Demographics", "Mental Health Insight"])
 
+#--------- Tab 1: Data Overview ---------
 with tab1:
     st.header("Data Overview")
-    st.write("""
-    number of participants... countries represented... date range... data preview...
-    """)
 
-    # data preview
+    # Data Preview
     with st.expander("Data Preview"):
         st.dataframe(
             df,
@@ -57,13 +50,11 @@ with tab1:
             },
         )
 
+#--------- Tab 2: Demographics ---------
 with tab2:
-    st.header("Survey Demographics")
-    st.write("""
-    gender distribution... geographic distribution... etc.
-    """)
+    st.header("Demographics")
     
-    # Gender distribution pie chart of responses
+    # Gender Distribution Pie Chart
     response_by_gender = df.groupby("Gender").size().reset_index(name="Total_Responses")
     fig_gender = px.pie(response_by_gender,
                  names="Gender",
@@ -71,7 +62,7 @@ with tab2:
                  title="Gender Distribution of Respondents")
     st.plotly_chart(fig_gender, use_container_width=True)
 
-    # Country distribution choropleth map of responses
+    # Country Distribution Choropleth Map
     response_by_country = df.groupby("Country").size().reset_index(name="Total_Responses")
     fig_map = px.choropleth(response_by_country,
                             locations="Country",
@@ -82,7 +73,7 @@ with tab2:
                             title="Country Distribution of Respondents")
     st.plotly_chart(fig_map, use_container_width=True)
 
-    # Occupation distribution bar chart of responses
+    # Occupation Distribution Bar Chart
     response_by_occupation = df.groupby("Occupation").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
     fig_occupation = px.bar(response_by_occupation,
                             x="Occupation",
@@ -91,23 +82,24 @@ with tab2:
                             labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_occupation, use_container_width=True)
 
-    # Self-Employed vs Non-Self-Employed
+    # Self-Employment Distribution Bar Chart
     df_filtered = df[df["self_employed"] != "Not specified"]
     response_by_self_employment = df_filtered.groupby("self_employed").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
     fig_self_employed = px.bar(response_by_self_employment,
                                x="self_employed",
                                y="Total_Responses",
-                               title="Comparison of Self-Employed vs Non-Self-Employed Respondents",
-                               labels={"self_employed": "Self-Employed Status", "Total_Responses": "Number of Respondents"})
+                               title="Self-Employment Distribution of Respondents",
+                               labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_self_employed, use_container_width=True)
 
+#--------- Tab 3: Mental Health Insight ---------
 with tab3:
-    st.header("Mental Health Indicators")
+    st.header("Mental Health Insight")
     st.write("""
     family history... days indoors... growing stress... etc..
     """)
 
-    # Family history of mental illness and seeking treatment correlation
+    # Family History vs Treatment
     response_by_family_history = df.groupby(["family_history", "treatment"]).size().reset_index(name="Total_Responses")
     fig_family_history = px.bar(response_by_family_history,
                                 x="family_history",
@@ -120,7 +112,7 @@ with tab3:
                                 barmode="stack")
     st.plotly_chart(fig_family_history, use_container_width=True)
 
-    # A heatmap showing the relationship between days spent indoors and coping struggles.
+    # Days Indoors vs Coping Struggles 
     response_by_days_indoors = df.groupby(["Days_Indoors", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
     fig_indoors_coping = px.density_heatmap(response_by_days_indoors,
                                             x="Days_Indoors",
@@ -129,7 +121,7 @@ with tab3:
                                             title="Relationship between Days Spent Indoors and Coping Struggles")
     st.plotly_chart(fig_indoors_coping, use_container_width=True)
 
-    # Changes in Habits and Mental Health: A stacked bar chart showing how people who reported habit changes also report mental health issues.
+    # Habit Changes vs Coping Struggles
     response_by_habit_changes = df.groupby(["Changes_Habits", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
     fig_habit_changes = px.bar(response_by_habit_changes,
                                 x="Changes_Habits",
