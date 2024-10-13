@@ -139,3 +139,22 @@ with tab3:
                                 labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
     st.plotly_chart(fig_habit_changes, use_container_width=True)
+
+    # Mood swings vs gender (vi har gender som filter redan, men kanske ska ha med den ändå?)
+    response_by_mood_swings = df.groupby(["Gender", "Mood_Swings"]).size().reset_index(name="Total_Responses")
+    fig_mood_swings = px.bar(response_by_mood_swings,
+                             x="Gender",
+                             y="Total_Responses",
+                             color="Mood_Swings",
+                             title="Mood Swings Distribution Based on Gender",
+                             labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
+                             barmode="group")
+    st.plotly_chart(fig_mood_swings, use_container_width=True)
+
+    # Mental health interview pie chart
+    response_by_interview = df.groupby("mental_health_interview").size().reset_index(name="Total_Responses")
+    fig_interview = px.pie(response_by_interview,
+                        names="mental_health_interview",
+                        values="Total_Responses",
+                        title="Respondents Who Have Had Mental Health Interviews")
+    st.plotly_chart(fig_interview, use_container_width=True)
