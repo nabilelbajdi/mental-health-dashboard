@@ -178,3 +178,26 @@ with tab3:
                                     color="Mood_Swings",
                                     title="Family History and Mood Swings Correlation")
     st.plotly_chart(fig_family_mood_swings, use_container_width=True)
+
+    # Seeking treatment vs gender (gender är redan filter)
+    response_by_gender_treatment = df.groupby(["Gender", "treatment"]).size().reset_index(name="Total_Responses")
+    fig_gender_treatment = px.bar(response_by_gender_treatment,
+                                  x="Gender",
+                                  y="Total_Responses",
+                                  color="treatment",
+                                  title="Gender Distribution of Mental Health Treatment",
+                                  labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
+                                  barmode="stack")
+    st.plotly_chart(fig_gender_treatment, use_container_width=True)
+
+    # Regional Differences in Coping Struggles
+    response_by_country_coping = df[df["Coping_Struggles"] == "Yes"].groupby("Country").size().reset_index(name="Total_Responses")
+    top_10_countries = response_by_country_coping.sort_values(by='Total_Responses', ascending=False).head(10)
+    fig_country_coping = px.choropleth(response_by_country_coping,
+                                       locations="Country",
+                                       locationmode="country names",
+                                       color="Total_Responses",
+                                       hover_name="Country",
+                                       color_continuous_scale=px.colors.sequential.Viridis,
+                                       title="Regional Differences in Coping Struggles")
+    st.plotly_chart(fig_country_coping, use_container_width=True)
