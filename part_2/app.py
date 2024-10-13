@@ -50,6 +50,14 @@ with tab1:
             },
         )
 
+    # Participation By Year Over Time Line Chart
+    response_by_year = df.groupby("Year").size().reset_index(name="Total_Responses")
+    fig_time = px.line(response_by_year,
+                    x="Year",
+                    y="Total_Responses",
+                    title="Participation Over Time")
+    st.plotly_chart(fig_time, use_container_width=True)
+
 #--------- Tab 2: Demographics ---------
 with tab2:
     st.header("Demographics")
