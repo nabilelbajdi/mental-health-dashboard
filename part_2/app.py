@@ -96,10 +96,13 @@ with tab1:
     
     with col1:
         st.metric("Total Responses", df_selection.shape[0])
+
     with col2:
         st.metric("Countries Represented", df_selection["Country"].nunique())
+
     with col3:
         st.metric("Occupations", df_selection[df_selection["Occupation"] != "Others"]["Occupation"].nunique())
+
     with col4:
         st.metric("Years Covered", f"{df_selection['Year'].min()} - {df_selection['Year'].max()}")
 
@@ -116,10 +119,14 @@ with tab1:
 
     # Participation By Year Over Time (Line Chart)
     response_by_year = df.groupby("Year").size().reset_index(name="Total_Responses")
+
     fig_time = px.line(response_by_year,
                        x="Year", y="Total_Responses",
-                       title="Participation Over Time")
+                       title="Participation Over Time",
+                       labels={"Year": "Year", "Total_Responses": "Number of Respondents"},
+                       markers=True)
     st.plotly_chart(fig_time, use_container_width=True)
+    st.caption("This line chart shows how survey participation has changed over the years. You can see which years had the highest engagement and how participation trends evolved.")
 
 #--------- Tab 2: Demographics ---------
 with tab2:
@@ -132,19 +139,24 @@ with tab2:
                             locationmode="country names",
                             color="Total_Responses",
                             hover_name="Country",
-                            color_continuous_scale=px.colors.sequential.Viridis,
-                            title="Country Distribution")
+                            title="Country Distribution",
+                            color_continuous_scale=px.colors.sequential.Blues,
+                            labels={"Total_Responses": "Number of Respondents"})
+
     st.plotly_chart(fig_map, use_container_width=True)
-    
+    st.caption("This map shows the global distribution of survey respondents. Darker colors indicate countries with more participants. The visualization helps identify which regions are most represented, and it suggests areas where mental health awareness or survey access may be higher.")
     st.divider()
 
     # Gender Distribution (Pie Chart)
     response_by_gender = df_selection.groupby("Gender").size().reset_index(name="Total_Responses")
+
     fig_gender = px.pie(response_by_gender,
                         names="Gender",
                         values="Total_Responses",
                         title="Gender Distribution")
+    
     st.plotly_chart(fig_gender, use_container_width=True)
+    st.caption("This pie chart shows the gender breakdown of respondents. The chart highlights whether the survey had a balanced gender representation, revealing potential disparities that could influence the interpretation of mental health trends.")
 
 #--------- Tab 3: Mental Health Insights ---------
 with tab3:
@@ -156,8 +168,9 @@ with tab3:
                                        x="Mental_Health_History", y="Total_Responses", 
                                        title="Mental Health History Distribution",
                                        labels={"Mental_Health_History": "History of Mental Health", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_mental_health_history, use_container_width=True)
-
+    st.caption("This bar chart shows the distribution of respondents who have a history of mental health issues. It helps illustrate how common mental health challenges are within this survey group.")
     st.divider()
 
     # Family History Distribution (Bar Chart)
@@ -166,8 +179,9 @@ with tab3:
                                 x="family_history", y="Total_Responses",
                                 title="Family History of Mental Illness Distribution",
                                 labels={"family_history": "Family History", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_family_history, use_container_width=True)
-
+    st.caption("This chart shows how many respondents have a family history of mental illness. It offers insights into the potential hereditary factors of mental health struggles.")
     st.divider()
 
     # Mental Health Interview Distribution (Pie Chart)
@@ -175,9 +189,11 @@ with tab3:
     fig_interview = px.pie(response_by_interview,
                            names="mental_health_interview",
                            values="Total_Responses",
-                           title="Mental Health Interview Distribution")
+                           title="Mental Health Interview Distribution",
+                           labels={"mental_health_interview": "Mental Health Interview", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_interview, use_container_width=True)
-
+    st.caption("This pie chart shows the proportion of respondents who have had a mental health interview. It gives insight into how often respondents have sought professional help.")
     st.divider()
 
     # Growing Stress Distribution (Bar chart)
@@ -185,9 +201,10 @@ with tab3:
     fig_stress_levels = px.bar(response_by_stress_levels,
                                x="Growing_Stress", y="Total_Responses",
                                title="Growing Stress Distribution",
-                               labels={"Growing_Stress": "Stress Level", "Total_Responses": "Number of Respondents"})
+                               labels={"Growing_Stress": "Growing Stress", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_stress_levels, use_container_width=True)
-
+    st.caption("This bar chart shows the number of respondents reporting growing levels of stress. It highlights the prevalence of stress within the survey group.")
     st.divider()
 
     # Mood Swings Distribution (Bar chart)
@@ -196,8 +213,9 @@ with tab3:
                             x="Mood_Swings", y="Total_Responses",
                             title="Mood Swings Distribution",
                             labels={"Mood_Swings": "Mood Swings", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_mood_swings, use_container_width=True)
-
+    st.caption("This bar chart shows the distribution of respondents who experience mood swings. It offers insights into how common mood swings are in this survey group.")
     st.divider()
 
     # Social Weakness Distribution (Bar chart)
@@ -206,8 +224,9 @@ with tab3:
                                  x="Social_Weakness", y="Total_Responses",
                                  title="Social Weakness Distribution",
                                  labels={"Social_Weakness": "Social Weakness", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_social_weakness, use_container_width=True)
 
+    st.plotly_chart(fig_social_weakness, use_container_width=True)
+    st.caption("This bar chart shows how many respondents report experiencing social weakness. It helps to identify the prevalence of social difficulties among the participants.")
     st.divider()
 
     # Days Indoors Distribution (Bar chart)
@@ -216,8 +235,9 @@ with tab3:
                               x="Days_Indoors", y="Total_Responses",
                               title="Days Indoors Distribution",
                               labels={"Days_Indoors": "Days Indoors", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_days_indoors, use_container_width=True)
 
+    st.plotly_chart(fig_days_indoors, use_container_width=True)
+    st.caption("This bar chart shows the number of days respondents spend indoors. It helps analyze how indoor activity may affect mental health.")
     st.divider()
 
     # Coping Struggles Distribution (Bar chart)
@@ -226,7 +246,9 @@ with tab3:
                                   x="Coping_Struggles", y="Total_Responses",
                                   title="Coping Struggles Distribution",
                                   labels={"Coping_Struggles": "Coping Struggles", "Total_Responses": "Number of Respondents"})
+
     st.plotly_chart(fig_coping_struggles, use_container_width=True)
+    st.caption("This bar chart shows how many respondents are struggling with coping. It highlights the extent of coping difficulties in this group.")
 
     st.divider()
 
@@ -235,9 +257,12 @@ with tab3:
     fig_indoors_coping = px.density_heatmap(response_by_days_indoors,
                                             x="Days_Indoors", y="Coping_Struggles",
                                             z="Total_Responses",
-                                            title="Correlation Between Days Spent Indoors and Coping Struggles")
-    st.plotly_chart(fig_indoors_coping, use_container_width=True)
+                                            title="Correlation Between Days Spent Indoors and Coping Struggles",
+                                            labels={"Days_Indoors": "Days Indoors", "Coping_Struggles": "Coping Struggles", "Total_Responses": "respondents"},
+                                            color_continuous_scale=px.colors.sequential.Blues)
 
+    st.plotly_chart(fig_indoors_coping, use_container_width=True)
+    st.caption("This heatmap shows the correlation between the number of days spent indoors and coping struggles. It helps identify how indoor activity might be related to mental health difficulties.")
     st.divider()
 
     # Regional Differences in Coping Struggles (Choropleth)
@@ -248,10 +273,12 @@ with tab3:
                                        locationmode="country names",
                                        color="Total_Responses",
                                        hover_name="Country",
-                                       color_continuous_scale=px.colors.sequential.Viridis,
-                                       title="Regional Differences in Coping Struggles")
+                                       title="Regional Differences in Coping Struggles",
+                                       color_continuous_scale=px.colors.sequential.Blues,
+                                       labels={"Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_country_coping, use_container_width=True)
-
+    st.caption("This map highlights the regional differences in coping struggles, showing which countries report the highest levels of difficulty.")
     st.divider()
 
     # Complementary Bar Chart Showing The Top 10 Countries Struggling (Bar Chart) - Kan vi lägga denna side to side till den ovan
@@ -259,8 +286,20 @@ with tab3:
                                   x="Country", y="Total_Responses",
                                   title="Top 10 Countries with Highest Coping Struggles", 
                                   labels={"Country": "Country", "Total_Responses": "Number of Struggles"})
-    st.plotly_chart(fig_top_10_countries, use_container_width=True)
 
+    st.plotly_chart(fig_top_10_countries, use_container_width=True)
+    st.caption("This bar chart complements the chart above, showing the top 10 countries where respondents report the most coping struggles. It provides insight into regional mental health challenges.")
+    st.divider()
+
+    # Habit Changes Distribution (Bar chart)
+    response_by_changes_habits = df_selection.groupby("Changes_Habits").size().reset_index(name="Total_Responses")
+    fig_changes_habits = px.bar(response_by_changes_habits,
+                                x="Changes_Habits", y="Total_Responses",
+                                title="Habit Changes Distribution",
+                                labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"})
+
+    st.plotly_chart(fig_changes_habits, use_container_width=True)
+    st.caption("This bar chart shows the distribution of respondents who have experienced changes in habits. It helps to identify how common these changes are in the group.")
     st.divider()
 
     # Habit Changes vs Coping Struggles (Stacked Bar Chart)
@@ -271,18 +310,9 @@ with tab3:
                                title="Correlation Between Habit Changes and Coping Struggles",
                                labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"},
                                barmode="stack")
+
     st.plotly_chart(fig_habit_changes, use_container_width=True)
-
-    st.divider()
-
-    # Habit Changes Distribution (Bar chart)
-    response_by_changes_habits = df_selection.groupby("Changes_Habits").size().reset_index(name="Total_Responses")
-    fig_changes_habits = px.bar(response_by_changes_habits,
-                                x="Changes_Habits", y="Total_Responses",
-                                title="Habit Changes Distribution",
-                                labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_changes_habits, use_container_width=True)
-
+    st.caption("This stacked bar chart shows the relationship between habit changes and coping struggles. It highlights how changes in behavior may relate to mental health difficulties.")
     st.divider()
 
     # Mood Swings vs Gender (Grouped Bar Chart)
@@ -293,8 +323,9 @@ with tab3:
                              title="Correlation Between Gender and Mood Swings",
                              labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                              barmode="group")
-    st.plotly_chart(fig_mood_swings, use_container_width=True)
 
+    st.plotly_chart(fig_mood_swings, use_container_width=True)
+    st.caption("This grouped bar chart shows the relationship between gender and mood swings. It offers insight into whether certain genders report more mood swings.")
     st.divider()
 
     # Family History vs Mood Swings (Bar Chart)
@@ -302,8 +333,11 @@ with tab3:
     fig_family_mood_swings = px.bar(response_by_family_mood_swings,
                                     x="family_history", y="Total_Responses",
                                     color="Mood_Swings",
-                                    title="Correlation Between Family History and Mood Swings")
+                                    title="Correlation Between Family History and Mood Swings",
+                                    labels={"family_history": "Family History", "Mood_Swings": "Mood Swings", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_family_mood_swings, use_container_width=True)
+    st.caption("This stacked bar chart shows the relationship between family history of mental illness and mood swings. It highlights potential hereditary factors influencing mood swings.")
 
 #--------- Tab 4: Work-Related Insights ---------
 with tab4:
@@ -315,8 +349,9 @@ with tab4:
                             x="Occupation", y="Total_Responses",
                             title="Occupation Distribution",
                             labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_occupation, use_container_width=True)
-
+    st.caption("This chart breaks down respondents by occupation. It highlights which professions are most represented in the survey and helps provide context for analyzing mental health trends by job role.")
     st.divider()
 
     # Self-Employment Distribution (Bar Chart)
@@ -326,8 +361,9 @@ with tab4:
                                x="self_employed", y="Total_Responses",
                                title="Self-Employment Distribution",
                                labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_self_employed, use_container_width=True)
 
+    st.plotly_chart(fig_self_employed, use_container_width=True)
+    st.caption("This chart shows the distribution of self-employed respondents. It highlights the prevalence of self-employment in the survey group and its potential link to mental health.")
     st.divider()
 
     # Work Interest Distribution (Bar chart)
@@ -336,8 +372,9 @@ with tab4:
                             x="Work_Interest", y="Total_Responses",
                             title="Work Interest Distribution",
                             labels={"Work_Interest": "Work Interest", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_work_interest, use_container_width=True)
 
+    st.plotly_chart(fig_work_interest, use_container_width=True)
+    st.caption("This chart shows the distribution of respondents interest in their work. It helps provide insight into how work engagement may influence mental health.")
     st.divider()
 
     # Occupations with the Highest Stress Levels (Horizontal Bar Chart)
@@ -347,7 +384,9 @@ with tab4:
                                    x="Total_Responses", y="Occupation",
                                    title="Occupations with the Highest Stress Levels",
                                    labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
+
     st.plotly_chart(fig_occupation_stress, use_container_width=True)
+    st.caption("This bar chart highlights which occupations report the highest levels of stress. It helps identify which job roles may be more prone to mental health struggles due to work-related stress.")
 
 #--------- Tab 5: Treatment and Care ---------
 with tab5:
@@ -359,8 +398,9 @@ with tab5:
                            x="treatment", y="Total_Responses",
                            title="Treatment Status Distribution",
                            labels={"treatment": "Treatment Status", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_treatment, use_container_width=True)
 
+    st.plotly_chart(fig_treatment, use_container_width=True)
+    st.caption("This bar chart shows how many respondents have received mental health treatment. It helps understand the level of engagement with mental health care among survey participants.")
     st.divider()
 
     # Care Options Distribution (Pie Chart)
@@ -368,9 +408,11 @@ with tab5:
     fig_interview = px.pie(response_by_interview,
                         names="care_options",
                         values="Total_Responses",
-                        title="Care Options Distribution")
-    st.plotly_chart(fig_interview, use_container_width=True)
+                        title="Care Options Distribution",
+                        labels={"care_options": "Care Options", "Total_Responses": "Number of Respondents"})
 
+    st.plotly_chart(fig_interview, use_container_width=True)
+    st.caption("This pie chart shows the distribution of mental health care options available to respondents. It highlights the availability of care resources.")
     st.divider()
 
     # Care Options Distribution by country (Choropleth map)
@@ -380,9 +422,13 @@ with tab5:
                                     locationmode="country names",
                                     color="care_options", 
                                     hover_name="Country",
-                                    title="Access to Mental Health Care Options by Country")
+                                    hover_data={"Total_Responses": True},  # Adding total responses to hover
+                                    title="Access to Mental Health Care Options by Country",
+                                    color_continuous_scale=px.colors.sequential.Blues,
+                                    labels={"care_options": "Care Options", "Total_Responses": "Number of Respondents"})
+    
     st.plotly_chart(fig_care_options, use_container_width=True)
-
+    st.caption("This map highlights access to mental health care options by country. It helps identify regions with better access to care and areas where care might be lacking. It’s important to note that some countries may have mixed responses, so this reflects the dominant opinion, not all opinions.")
     st.divider()
 
     # Gender vs Treatment (Stacked Bar Chart)
@@ -393,8 +439,9 @@ with tab5:
                                   title="Correlation Between Gender and Mental Health Treatment",
                                   labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                                   barmode="stack")
-    st.plotly_chart(fig_gender_treatment, use_container_width=True)
 
+    st.plotly_chart(fig_gender_treatment, use_container_width=True)
+    st.caption("This chart shows the relationship between gender and engagement with mental health treatment. It provides insights into whether certain genders are more likely to seek help and receive treatment.")
     st.divider()
 
     # Treatment vs Mood Swings (Stacked Bar chart)
@@ -405,8 +452,9 @@ with tab5:
                                        title="Correlation Between Mental Health Treatment and Mood Swings",
                                        labels={"treatment": "Treatment", "Mood_Swings": "Mood Swings", "Total_Responses": "Number of Respondents"},
                                        barmode="stack")
-    st.plotly_chart(fig_treatment_mood_swings, use_container_width=True)
 
+    st.plotly_chart(fig_treatment_mood_swings, use_container_width=True)
+    st.caption("This chart shows how receiving mental health treatment relates to mood swings. It helps to assess whether treatment has an impact on emotional stability.")
     st.divider()
 
     # Treatment vs Family History of Mental Illness (Stacked Bar Chart)
@@ -417,4 +465,6 @@ with tab5:
                                 title="Correlation Between Family History of Mental Illness and Treatment",
                                 labels={"family_history": "Family History of Mental Illness", "treatment": "Treatment", "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
+
     st.plotly_chart(fig_family_history, use_container_width=True)
+    st.caption("This chart explores the relationship between a family history of mental illness and receiving treatment. It offers insight into how genetic factors may influence the decision to seek help.")
