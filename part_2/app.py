@@ -71,7 +71,7 @@ with tab1:
             },
         )
 
-    # Participation By Year Over Time Line Chart
+    # Participation By Year Over Time (Line Chart)
     response_by_year = df.groupby("Year").size().reset_index(name="Total_Responses")
     fig_time = px.line(response_by_year,
                     x="Year",
@@ -83,15 +83,15 @@ with tab1:
 with tab2:
     st.header("Demographics")
     
-    # Gender Distribution Pie Chart
+    # Gender Distribution (Pie Chart)
     response_by_gender = df_selection.groupby("Gender").size().reset_index(name="Total_Responses")
     fig_gender = px.pie(response_by_gender,
                  names="Gender",
                  values="Total_Responses",
-                 title="Gender Distribution of Respondents")
+                 title="Gender Distribution")
     st.plotly_chart(fig_gender, use_container_width=True)
 
-    # Country Distribution Choropleth Map
+    # Country Distribution (Choropleth Map)
     response_by_country = df_selection.groupby("Country").size().reset_index(name="Total_Responses")
     fig_map = px.choropleth(response_by_country,
                             locations="Country",
@@ -99,36 +99,52 @@ with tab2:
                             color="Total_Responses",
                             hover_name="Country",
                             color_continuous_scale=px.colors.sequential.Viridis,
-                            title="Country Distribution of Respondents")
+                            title="Country Distribution")
     st.plotly_chart(fig_map, use_container_width=True)
 
-    # Occupation Distribution Bar Chart
+    # Occupation Distribution (Bar Chart)
     response_by_occupation = df_selection.groupby("Occupation").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
     fig_occupation = px.bar(response_by_occupation,
                             x="Occupation",
                             y="Total_Responses",
-                            title="Occupation Distribution of Respondents",
+                            title="Occupation Distribution",
                             labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_occupation, use_container_width=True)
 
-    # Self-Employment Distribution Bar Chart
+    # Self-Employment Distribution (Bar Chart)
     df_filtered = df_selection[df_selection["self_employed"] != "Not specified"]
     response_by_self_employment = df_filtered.groupby("self_employed").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
     fig_self_employed = px.bar(response_by_self_employment,
                                x="self_employed",
                                y="Total_Responses",
-                               title="Self-Employment Distribution of Respondents",
+                               title="Self-Employment Distribution",
                                labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_self_employed, use_container_width=True)
 
-    # Family History Distribution Bar Chart
+    # Family History Distribution (Bar Chart)
     response_by_family_history = df_selection.groupby("family_history").size().reset_index(name="Total_Responses")
     fig_family_history = px.bar(response_by_family_history,
                                 x="family_history", 
                                 y="Total_Responses",
-                                title="Family History of Mental Illness",
+                                title="Family History of Mental Illness Distribution",
                                 labels={"family_history": "Family History", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_family_history, use_container_width=True)
+
+    # Mental Health Interview Distribution (Pie Chart)
+    response_by_interview = df_selection.groupby("mental_health_interview").size().reset_index(name="Total_Responses")
+    fig_interview = px.pie(response_by_interview,
+                        names="mental_health_interview",
+                        values="Total_Responses",
+                        title="Mental Health Interview Distribution")
+    st.plotly_chart(fig_interview, use_container_width=True)
+
+    # Growing Stress Distribution (Bar chart)
+    response_by_stress_levels = df_selection.groupby("Growing_Stress").size().reset_index(name="Total_Responses")
+    fig_stress_levels = px.bar(response_by_stress_levels,
+                            x="Growing_Stress", y="Total_Responses",
+                            title="Stress Levels",
+                            labels={"Growing_Stress": "Stress Level", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_stress_levels, use_container_width=True)
 
 #--------- Tab 3: Mental Health Insight ---------
 with tab3:
@@ -164,14 +180,6 @@ with tab3:
                              labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                              barmode="group")
     st.plotly_chart(fig_mood_swings, use_container_width=True)
-
-    # Mental health interview pie chart
-    response_by_interview = df_selection.groupby("mental_health_interview").size().reset_index(name="Total_Responses")
-    fig_interview = px.pie(response_by_interview,
-                        names="mental_health_interview",
-                        values="Total_Responses",
-                        title="Respondents Who Have Had Mental Health Interviews")
-    st.plotly_chart(fig_interview, use_container_width=True)
 
     # Stress levels vs occupation
     response_by_occupation_struggles = df_selection.groupby(["Occupation", "Growing_Stress"]).size().reset_index(name="Total_Responses")
