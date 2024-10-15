@@ -34,13 +34,21 @@ country = st.sidebar.multiselect(
     options=df["Country"].unique(),
 )
 
+st.sidebar.title("Occupation Filter")
+occupation = st.sidebar.multiselect(
+    "Select Occupation",
+    options=df["Occupation"].unique(),
+)
+
 # Default Filters
 if not gender:
     gender = df["Gender"].unique()
 if not country:
     country = df["Country"].unique()
+if not occupation:
+    occupation = df["Occupation"].unique()
 
-df_selection = df[df["Gender"].isin(gender) & df["Country"].isin(country)]
+df_selection = df[df["Gender"].isin(gender) & df["Country"].isin(country) & df["Occupation"].isin(occupation)]
 
 # Title and Description
 st.title("Mental Health Dataset Analysis")
@@ -210,55 +218,51 @@ with tab2:
 with tab3:
     st.header("Mental Health Insight")
 
-    # Days Indoors vs Coping Struggles 
+    # Days Indoors vs Coping Struggles (Heatmap)
     response_by_days_indoors = df_selection.groupby(["Days_Indoors", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
     fig_indoors_coping = px.density_heatmap(response_by_days_indoors,
-                                            x="Days_Indoors",
-                                            y="Coping_Struggles",
+                                            x="Days_Indoors", y="Coping_Struggles",
                                             z="Total_Responses",
-                                            title="Relationship between Days Spent Indoors and Coping Struggles")
+                                            title="Correlation Between Days Spent Indoors and Coping Struggles")
     st.plotly_chart(fig_indoors_coping, use_container_width=True)
 
-    # Habit Changes vs Coping Struggles
+    # Habit Changes vs Coping Struggles (Stacked Bar Chart)
     response_by_habit_changes = df_selection.groupby(["Changes_Habits", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
     fig_habit_changes = px.bar(response_by_habit_changes,
-                                x="Changes_Habits",
-                                y="Total_Responses",
+                                x="Changes_Habits", y="Total_Responses",
                                 color="Coping_Struggles",
-                                title="Changes in Habits and Coping Struggles",
+                                title="Correlation between Habit Changes and Coping Struggles",
                                 labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
     st.plotly_chart(fig_habit_changes, use_container_width=True)
 
-    # Mood swings vs gender
+    # Mood Swings vs Gender (Grouped Bar)
     response_by_mood_swings = df_selection.groupby(["Gender", "Mood_Swings"]).size().reset_index(name="Total_Responses")
     fig_mood_swings = px.bar(response_by_mood_swings,
-                             x="Gender",
-                             y="Total_Responses",
+                             x="Gender", y="Total_Responses",
                              color="Mood_Swings",
-                             title="Mood Swings Distribution Based on Gender",
+                             title="Correlation Gender and Mood Swings",
                              labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                              barmode="group")
     st.plotly_chart(fig_mood_swings, use_container_width=True)
 
-    # Stress levels vs occupation
-    response_by_occupation_struggles = df_selection.groupby(["Occupation", "Growing_Stress"]).size().reset_index(name="Total_Responses")
-    fig_occupation_struggles = px.bar(response_by_occupation_struggles,
-                                        x="Occupation",
-                                        y="Total_Responses",
-                                        color="Growing_Stress",
-                                        title="Occupations and Growing Stress Correlation",
-                                        labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"},
-                                        barmode="group")
-    st.plotly_chart(fig_occupation_struggles, use_container_width=True)
+    # Occupations with the Highest Stress Levels
+    response_by_occupation_stress = df_selection[df_selection["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
+    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
+    fig_occupation_stress = px.bar(response_by_occupation_stress,
+                                    x="Total_Responses",
+                                    y="Occupation",
+                                    title="Occupations with the Highest Stress Levels",
+                                    labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
+    st.plotly_chart(fig_occupation_stress, use_container_width=True)
 
-    # Family history vs mood swings
+    # Family History vs Mood Swings
     response_by_family_mood_swings = df_selection.groupby(["family_history", "Mood_Swings"]).size().reset_index(name="Total_Responses")
     fig_family_mood_swings = px.bar(response_by_family_mood_swings,
                                     x="family_history",
                                     y="Total_Responses",
                                     color="Mood_Swings",
-                                    title="Family History and Mood Swings Correlation")
+                                    title="Correlation between Family History and Mood Swings")
     st.plotly_chart(fig_family_mood_swings, use_container_width=True)
 
     # Regional Differences in Coping Struggles
@@ -273,23 +277,12 @@ with tab3:
                                        title="Regional Differences in Coping Struggles")
     st.plotly_chart(fig_country_coping, use_container_width=True)
 
-    # Complementary bar chart showing the top 10 countries struggling
-    fig_top_5_countries = px.bar(top_10_countries,
-                    x="Country", 
-                    y="Total_Responses",  
+    # Complementary Bar Chart Showing The Top 10 Countries Struggling
+    fig_top_10_countries = px.bar(top_10_countries,
+                    x="Country", y="Total_Responses",  
                     title="Top 10 Countries with Highest Coping Struggles",
                     labels={"Country": "Country", "Total_Responses": "Number of Struggles"})
-    st.plotly_chart(fig_top_5_countries, use_container_width=True)
-
-    # Occupations with the Highest Stress Levels
-    response_by_occupation_stress = df_selection[df_selection["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
-    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
-    fig_occupation_stress = px.bar(response_by_occupation_stress,
-                                    x="Total_Responses",
-                                    y="Occupation",
-                                    title="Occupations with the Highest Stress Levels",
-                                    labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
-    st.plotly_chart(fig_occupation_stress, use_container_width=True)
+    st.plotly_chart(fig_top_10_countries, use_container_width=True)
 
 #--------- Tab 4: Treatment & Care ---------
 with tab4:
