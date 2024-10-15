@@ -53,8 +53,8 @@ df_selection = df[df["Gender"].isin(gender) & df["Country"].isin(country) & df["
 # Title and Description
 st.title("Mental Health Dataset Analysis :brain:")
 st.write("""
-Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insight across various factors such as gender, occupation, and treatment status.
-Use the tabs above to navigate through different sections.
+Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insight across various factors such as gender, country and occupation.
+Use the tabs below to navigate through different sections.
 """)
 
 # Data Cleaning
@@ -142,6 +142,14 @@ with tab2:
                            title="Mental Health Interview Distribution")
     st.plotly_chart(fig_interview, use_container_width=True)
 
+    # Care Options Distribution (Pie Chart)
+    response_by_interview = df_selection.groupby("care_options").size().reset_index(name="Total_Responses")
+    fig_interview = px.pie(response_by_interview,
+                        names="care_options",
+                        values="Total_Responses",
+                        title="Care Options Distribution")
+    st.plotly_chart(fig_interview, use_container_width=True)
+
     # Growing Stress Distribution (Bar chart)
     response_by_stress_levels = df_selection.groupby("Growing_Stress").size().reset_index(name="Total_Responses")
     fig_stress_levels = px.bar(response_by_stress_levels,
@@ -162,7 +170,7 @@ with tab2:
     response_by_treatment = df_selection.groupby("treatment").size().reset_index(name="Total_Responses")
     fig_treatment = px.bar(response_by_treatment,
                            x="treatment", y="Total_Responses",
-                           title="Treatment STatus Distribution",
+                           title="Treatment Status Distribution",
                            labels={"treatment": "Treatment", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_treatment, use_container_width=True)
 
@@ -286,8 +294,8 @@ with tab3:
 with tab4:
     st.header("Treatment & Care")
 
-    # Family History of Mental Illness vs Treatment (Stacked Bar Chart)
-    response_by_family_history = df_selection.groupby(["family_history", "treatment"]).size().reset_index(name="Total_Responses")
+    # Treatment vs Family History of Mental Illness (Stacked Bar Chart)
+    response_by_family_history = df_selection.groupby(["treatment", "family_history"]).size().reset_index(name="Total_Responses")
     fig_family_history = px.bar(response_by_family_history,
                                 x="family_history", y="Total_Responses",
                                 color="treatment",
@@ -301,7 +309,27 @@ with tab4:
     fig_gender_treatment = px.bar(response_by_gender_treatment, 
                                   x="Gender", y="Total_Responses",
                                   color="treatment",
-                                  title="Correlation between Gender and Mental Health Treatment",
+                                  title="Correlation Between Gender and Mental Health Treatment",
                                   labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                                   barmode="stack")
     st.plotly_chart(fig_gender_treatment, use_container_width=True)
+
+    # Treatment vs Mood Swings (Stacked Bar chart)
+    response_by_treatment_mood_swings = df_selection.groupby(["treatment", "Mood_Swings"]).size().reset_index(name="Total_Responses")
+    fig_treatment_mood_swings = px.bar(response_by_treatment_mood_swings,
+                                       x="treatment", y="Total_Responses", 
+                                       color="Mood_Swings",
+                                       title="Correlation Between Mental Health Treatment and Mood Swings",
+                                       labels={"treatment": "Treatment", "Mood_Swings": "Mood Swings", "Total_Responses": "Number of Respondents"},
+                                       barmode="stack")
+    st.plotly_chart(fig_treatment_mood_swings, use_container_width=True)
+
+    # Care Options Distribution by country (Choropleth map)
+    response_by_care_options = df_selection.groupby(["Country", "care_options"]).size().reset_index(name="Total_Responses")
+    fig_care_options = px.choropleth(response_by_care_options,
+                                    locations="Country", 
+                                    locationmode="country names",
+                                    color="care_options", 
+                                    hover_name="Country",
+                                    title="Access to Mental Health Care Options by Country")
+    st.plotly_chart(fig_care_options, use_container_width=True)
