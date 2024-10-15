@@ -13,6 +13,7 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     df = pd.read_csv("Mental Health Dataset.csv")
+    df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce") 
     df["Hour"] = pd.to_datetime(df["Timestamp"]).dt.hour
     df["Month"] = pd.to_datetime(df["Timestamp"]).dt.month
     df["Year"] = pd.to_datetime(df["Timestamp"]).dt.year
@@ -40,6 +41,21 @@ occupation = st.sidebar.multiselect(
     options=df["Occupation"].unique(),
 )
 
+st.sidebar.title("Time Range Filter")
+min_date = df["Timestamp"].min().date()
+max_date = df["Timestamp"].max().date()
+
+start_date = st.sidebar.date_input(
+    "Start Date", min_date, min_value=min_date, max_value=max_date
+)
+end_date = st.sidebar.date_input(
+    "End Date", max_date, min_value=min_date, max_value=max_date
+)
+
+if start_date > end_date:
+    st.sidebar.error("Start date can't be after end date")
+    st.stop()
+
 # Default Filters
 if not gender:
     gender = df["Gender"].unique()
@@ -48,7 +64,13 @@ if not country:
 if not occupation:
     occupation = df["Occupation"].unique()
 
-df_selection = df[df["Gender"].isin(gender) & df["Country"].isin(country) & df["Occupation"].isin(occupation)]
+df_selection = df[
+    df["Gender"].isin(gender) &
+    df["Country"].isin(country) & 
+    df["Occupation"].isin(occupation) &
+    (df["Timestamp"].dt.date >= start_date) &
+    (df["Timestamp"].dt.date <= end_date)
+    ]
 
 # Title and Description
 st.title("Mental Health Dataset Analysis :brain:")
@@ -58,7 +80,6 @@ Use the tabs below to navigate through different sections.
 """)
 
 # Data Cleaning
-df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce") 
 df["self_employed"] = df["self_employed"].fillna("Not specified")
 df["care_options"] = df["care_options"].replace("Not sure", "Maybe")
 
