@@ -121,6 +121,15 @@ with tab2:
                                labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_self_employed, use_container_width=True)
 
+    # Family History Distribution Bar Chart
+    response_by_family_history = df_selection.groupby("family_history").size().reset_index(name="Total_Responses")
+    fig_family_history = px.bar(response_by_family_history,
+                                x="family_history", 
+                                y="Total_Responses",
+                                title="Family History of Mental Illness",
+                                labels={"family_history": "Family History", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_family_history, use_container_width=True)
+
 #--------- Tab 3: Mental Health Insight ---------
 with tab3:
     st.header("Mental Health Insight")
