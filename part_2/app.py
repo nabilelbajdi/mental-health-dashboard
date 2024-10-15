@@ -74,8 +74,7 @@ with tab1:
     # Participation By Year Over Time (Line Chart)
     response_by_year = df.groupby("Year").size().reset_index(name="Total_Responses")
     fig_time = px.line(response_by_year,
-                    x="Year",
-                    y="Total_Responses",
+                    x="Year", y="Total_Responses",
                     title="Participation Over Time")
     st.plotly_chart(fig_time, use_container_width=True)
 
@@ -105,8 +104,7 @@ with tab2:
     # Occupation Distribution (Bar Chart)
     response_by_occupation = df_selection.groupby("Occupation").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
     fig_occupation = px.bar(response_by_occupation,
-                            x="Occupation",
-                            y="Total_Responses",
+                            x="Occupation", y="Total_Responses",
                             title="Occupation Distribution",
                             labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_occupation, use_container_width=True)
@@ -115,8 +113,7 @@ with tab2:
     df_filtered = df_selection[df_selection["self_employed"] != "Not specified"]
     response_by_self_employment = df_filtered.groupby("self_employed").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
     fig_self_employed = px.bar(response_by_self_employment,
-                               x="self_employed",
-                               y="Total_Responses",
+                               x="self_employed", y="Total_Responses",
                                title="Self-Employment Distribution",
                                labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_self_employed, use_container_width=True)
@@ -124,8 +121,7 @@ with tab2:
     # Family History Distribution (Bar Chart)
     response_by_family_history = df_selection.groupby("family_history").size().reset_index(name="Total_Responses")
     fig_family_history = px.bar(response_by_family_history,
-                                x="family_history", 
-                                y="Total_Responses",
+                                x="family_history", y="Total_Responses",
                                 title="Family History of Mental Illness Distribution",
                                 labels={"family_history": "Family History", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_family_history, use_container_width=True)
@@ -142,9 +138,25 @@ with tab2:
     response_by_stress_levels = df_selection.groupby("Growing_Stress").size().reset_index(name="Total_Responses")
     fig_stress_levels = px.bar(response_by_stress_levels,
                             x="Growing_Stress", y="Total_Responses",
-                            title="Stress Levels",
+                            title="Growing Stress Distribution",
                             labels={"Growing_Stress": "Stress Level", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_stress_levels, use_container_width=True)
+
+    # Coping Struggles Distribution (Bar chart)
+    response_by_coping_struggles = df_selection.groupby("Coping_Struggles").size().reset_index(name="Total_Responses")
+    fig_coping_struggles = px.bar(response_by_coping_struggles,
+                                x="Coping_Struggles", y="Total_Responses",
+                                title="Coping Struggles Distribution",
+                                labels={"Coping_Struggles": "Coping Struggles", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_coping_struggles, use_container_width=True)
+
+    # Treatment Distribution (Bar chart)
+    response_by_treatment = df_selection.groupby("treatment").size().reset_index(name="Total_Responses")
+    fig_treatment = px.bar(response_by_treatment,
+                        x="treatment", y="Total_Responses",
+                        title="Treatment STatus Distribution",
+                        labels={"treatment": "Treatment Status", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_treatment, use_container_width=True)
 
 #--------- Tab 3: Mental Health Insight ---------
 with tab3:
