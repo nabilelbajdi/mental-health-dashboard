@@ -99,7 +99,7 @@ with tab1:
     with col2:
         st.metric("Countries Represented", df_selection["Country"].nunique())
     with col3:
-        st.metric("Occupations", df_selection["Occupation"].nunique() - 1)
+        st.metric("Occupations", df_selection[df_selection["Occupation"] != "Others"]["Occupation"].nunique())
     with col4:
         st.metric("Years Covered", f"{df_selection['Year'].min()} - {df_selection['Year'].max()}")
 
