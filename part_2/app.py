@@ -190,6 +190,22 @@ with tab2:
                             labels={"Mood_Swings": "Mood Swings", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_mood_swings, use_container_width=True)
 
+    # Work Interest Distribution (Bar chart)
+    response_by_work_interest = df_selection.groupby("Work_Interest").size().reset_index(name="Total_Responses")
+    fig_work_interest = px.bar(response_by_work_interest,
+                            x="Work_Interest", y="Total_Responses",
+                            title="Work Interest Distribution",
+                            labels={"Work_Interest": "Work Interest", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_work_interest, use_container_width=True)
+
+    # Social Weakness Distribution (Bar chart)
+    response_by_social_weakness = df_selection.groupby("Social_Weakness").size().reset_index(name="Total_Responses")
+    fig_social_weakness = px.bar(response_by_social_weakness,
+                                x="Social_Weakness", y="Total_Responses",
+                                title="Social Weakness Distribution",
+                                labels={"Social_Weakness": "Social Weakness", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_social_weakness, use_container_width=True)
+
 #--------- Tab 3: Mental Health Insight ---------
 with tab3:
     st.header("Mental Health Insight")
