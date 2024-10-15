@@ -174,6 +174,22 @@ with tab2:
                                 labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_changes_habits, use_container_width=True)
 
+    # History of Mental Health Distribution (Bar chart)
+    response_by_mental_health_history = df_selection.groupby("Mental_Health_History").size().reset_index(name="Total_Responses")
+    fig_mental_health_history = px.bar(response_by_mental_health_history,
+                                    x="Mental_Health_History", y="Total_Responses",
+                                    title="Mental Health History Distribution",
+                                    labels={"Mental_Health_History": "History of Mental Health", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_mental_health_history, use_container_width=True)
+
+    # Mood Swings Distribution (Bar chart)
+    response_by_mood_swings = df_selection.groupby("Mood_Swings").size().reset_index(name="Total_Responses")
+    fig_mood_swings = px.bar(response_by_mood_swings,
+                            x="Mood_Swings", y="Total_Responses",
+                            title="Mood Swings Distribution",
+                            labels={"Mood_Swings": "Mood Swings", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_mood_swings, use_container_width=True)
+
 #--------- Tab 3: Mental Health Insight ---------
 with tab3:
     st.header("Mental Health Insight")
