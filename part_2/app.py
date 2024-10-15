@@ -51,7 +51,7 @@ if not occupation:
 df_selection = df[df["Gender"].isin(gender) & df["Country"].isin(country) & df["Occupation"].isin(occupation)]
 
 # Title and Description
-st.title("Mental Health Dataset Analysis")
+st.title("Mental Health Dataset Analysis :brain:")
 st.write("""
 Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insight across various factors such as gender, occupation, and treatment status.
 Use the tabs above to navigate through different sections.
@@ -82,8 +82,8 @@ with tab1:
     # Participation By Year Over Time (Line Chart)
     response_by_year = df.groupby("Year").size().reset_index(name="Total_Responses")
     fig_time = px.line(response_by_year,
-                    x="Year", y="Total_Responses",
-                    title="Participation Over Time")
+                       x="Year", y="Total_Responses",
+                       title="Participation Over Time")
     st.plotly_chart(fig_time, use_container_width=True)
 
 #--------- Tab 2: Demographics ---------
@@ -93,9 +93,9 @@ with tab2:
     # Gender Distribution (Pie Chart)
     response_by_gender = df_selection.groupby("Gender").size().reset_index(name="Total_Responses")
     fig_gender = px.pie(response_by_gender,
-                 names="Gender",
-                 values="Total_Responses",
-                 title="Gender Distribution")
+                        names="Gender",
+                        values="Total_Responses",
+                        title="Gender Distribution")
     st.plotly_chart(fig_gender, use_container_width=True)
 
     # Country Distribution (Choropleth Map)
@@ -137,41 +137,41 @@ with tab2:
     # Mental Health Interview Distribution (Pie Chart)
     response_by_interview = df_selection.groupby("mental_health_interview").size().reset_index(name="Total_Responses")
     fig_interview = px.pie(response_by_interview,
-                        names="mental_health_interview",
-                        values="Total_Responses",
-                        title="Mental Health Interview Distribution")
+                           names="mental_health_interview",
+                           values="Total_Responses",
+                           title="Mental Health Interview Distribution")
     st.plotly_chart(fig_interview, use_container_width=True)
 
     # Growing Stress Distribution (Bar chart)
     response_by_stress_levels = df_selection.groupby("Growing_Stress").size().reset_index(name="Total_Responses")
     fig_stress_levels = px.bar(response_by_stress_levels,
-                            x="Growing_Stress", y="Total_Responses",
-                            title="Growing Stress Distribution",
-                            labels={"Growing_Stress": "Stress Level", "Total_Responses": "Number of Respondents"})
+                               x="Growing_Stress", y="Total_Responses",
+                               title="Growing Stress Distribution",
+                               labels={"Growing_Stress": "Stress Level", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_stress_levels, use_container_width=True)
 
     # Coping Struggles Distribution (Bar chart)
     response_by_coping_struggles = df_selection.groupby("Coping_Struggles").size().reset_index(name="Total_Responses")
     fig_coping_struggles = px.bar(response_by_coping_struggles,
-                                x="Coping_Struggles", y="Total_Responses",
-                                title="Coping Struggles Distribution",
-                                labels={"Coping_Struggles": "Coping Struggles", "Total_Responses": "Number of Respondents"})
+                                  x="Coping_Struggles", y="Total_Responses",
+                                  title="Coping Struggles Distribution",
+                                  labels={"Coping_Struggles": "Coping Struggles", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_coping_struggles, use_container_width=True)
 
     # Treatment Distribution (Bar chart)
     response_by_treatment = df_selection.groupby("treatment").size().reset_index(name="Total_Responses")
     fig_treatment = px.bar(response_by_treatment,
-                        x="treatment", y="Total_Responses",
-                        title="Treatment STatus Distribution",
-                        labels={"treatment": "Treatment Status", "Total_Responses": "Number of Respondents"})
+                           x="treatment", y="Total_Responses",
+                           title="Treatment STatus Distribution",
+                           labels={"treatment": "Treatment Status", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_treatment, use_container_width=True)
 
     # Days Indoors Distribution (Bar chart)
     response_by_days_indoors = df_selection.groupby("Days_Indoors").size().reset_index(name="Total_Responses")
     fig_days_indoors = px.bar(response_by_days_indoors,
-                            x="Days_Indoors", y="Total_Responses",
-                            title="Days Indoors Distribution",
-                            labels={"Days_Indoors": "Days Indoors", "Total_Responses": "Number of Respondents"})
+                              x="Days_Indoors", y="Total_Responses",
+                              title="Days Indoors Distribution",
+                              labels={"Days_Indoors": "Days Indoors", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_days_indoors, use_container_width=True)
 
     # Habit Changes Distribution (Bar chart)
@@ -185,9 +185,9 @@ with tab2:
     # History of Mental Health Distribution (Bar chart)
     response_by_mental_health_history = df_selection.groupby("Mental_Health_History").size().reset_index(name="Total_Responses")
     fig_mental_health_history = px.bar(response_by_mental_health_history,
-                                    x="Mental_Health_History", y="Total_Responses",
-                                    title="Mental Health History Distribution",
-                                    labels={"Mental_Health_History": "History of Mental Health", "Total_Responses": "Number of Respondents"})
+                                       x="Mental_Health_History", y="Total_Responses", 
+                                       title="Mental Health History Distribution",
+                                       labels={"Mental_Health_History": "History of Mental Health", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_mental_health_history, use_container_width=True)
 
     # Mood Swings Distribution (Bar chart)
@@ -209,9 +209,9 @@ with tab2:
     # Social Weakness Distribution (Bar chart)
     response_by_social_weakness = df_selection.groupby("Social_Weakness").size().reset_index(name="Total_Responses")
     fig_social_weakness = px.bar(response_by_social_weakness,
-                                x="Social_Weakness", y="Total_Responses",
-                                title="Social Weakness Distribution",
-                                labels={"Social_Weakness": "Social Weakness", "Total_Responses": "Number of Respondents"})
+                                 x="Social_Weakness", y="Total_Responses",
+                                 title="Social Weakness Distribution",
+                                 labels={"Social_Weakness": "Social Weakness", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_social_weakness, use_container_width=True)
 
 #--------- Tab 3: Mental Health Insight ---------
@@ -229,43 +229,32 @@ with tab3:
     # Habit Changes vs Coping Struggles (Stacked Bar Chart)
     response_by_habit_changes = df_selection.groupby(["Changes_Habits", "Coping_Struggles"]).size().reset_index(name="Total_Responses")
     fig_habit_changes = px.bar(response_by_habit_changes,
-                                x="Changes_Habits", y="Total_Responses",
-                                color="Coping_Struggles",
-                                title="Correlation between Habit Changes and Coping Struggles",
-                                labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"},
-                                barmode="stack")
+                               x="Changes_Habits", y="Total_Responses",
+                               color="Coping_Struggles",
+                               title="Correlation Between Habit Changes and Coping Struggles",
+                               labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"},
+                               barmode="stack")
     st.plotly_chart(fig_habit_changes, use_container_width=True)
 
-    # Mood Swings vs Gender (Grouped Bar)
+    # Mood Swings vs Gender (Grouped Bar Chart)
     response_by_mood_swings = df_selection.groupby(["Gender", "Mood_Swings"]).size().reset_index(name="Total_Responses")
     fig_mood_swings = px.bar(response_by_mood_swings,
                              x="Gender", y="Total_Responses",
                              color="Mood_Swings",
-                             title="Correlation Gender and Mood Swings",
+                             title="Correlation Between Gender and Mood Swings",
                              labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                              barmode="group")
     st.plotly_chart(fig_mood_swings, use_container_width=True)
 
-    # Occupations with the Highest Stress Levels
-    response_by_occupation_stress = df_selection[df_selection["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
-    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
-    fig_occupation_stress = px.bar(response_by_occupation_stress,
-                                    x="Total_Responses",
-                                    y="Occupation",
-                                    title="Occupations with the Highest Stress Levels",
-                                    labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
-    st.plotly_chart(fig_occupation_stress, use_container_width=True)
-
-    # Family History vs Mood Swings
+    # Family History vs Mood Swings (Bar Chart)
     response_by_family_mood_swings = df_selection.groupby(["family_history", "Mood_Swings"]).size().reset_index(name="Total_Responses")
     fig_family_mood_swings = px.bar(response_by_family_mood_swings,
-                                    x="family_history",
-                                    y="Total_Responses",
+                                    x="family_history", y="Total_Responses",
                                     color="Mood_Swings",
-                                    title="Correlation between Family History and Mood Swings")
+                                    title="Correlation Between Family History and Mood Swings")
     st.plotly_chart(fig_family_mood_swings, use_container_width=True)
 
-    # Regional Differences in Coping Struggles
+    # Regional Differences in Coping Struggles (Choropleth)
     response_by_country_coping = df_selection[df_selection["Coping_Struggles"] == "Yes"].groupby("Country").size().reset_index(name="Total_Responses")
     top_10_countries = response_by_country_coping.sort_values(by="Total_Responses", ascending=False).head(10)
     fig_country_coping = px.choropleth(response_by_country_coping,
@@ -277,37 +266,42 @@ with tab3:
                                        title="Regional Differences in Coping Struggles")
     st.plotly_chart(fig_country_coping, use_container_width=True)
 
-    # Complementary Bar Chart Showing The Top 10 Countries Struggling
-    fig_top_10_countries = px.bar(top_10_countries,
-                    x="Country", y="Total_Responses",  
-                    title="Top 10 Countries with Highest Coping Struggles",
-                    labels={"Country": "Country", "Total_Responses": "Number of Struggles"})
+    # Complementary Bar Chart Showing The Top 10 Countries Struggling (Bar Chart) - Kan vi lägga denna side to side till den ovan
+    fig_top_10_countries = px.bar(top_10_countries, 
+                                  x="Country", y="Total_Responses",
+                                  title="Top 10 Countries with Highest Coping Struggles", 
+                                  labels={"Country": "Country", "Total_Responses": "Number of Struggles"})
     st.plotly_chart(fig_top_10_countries, use_container_width=True)
+
+    # Occupations with the Highest Stress Levels (Horizontal Bar Chart)
+    response_by_occupation_stress = df_selection[df_selection["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
+    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
+    fig_occupation_stress = px.bar(response_by_occupation_stress,
+                                   x="Total_Responses", y="Occupation",
+                                   title="Occupations with the Highest Stress Levels",
+                                   labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
+    st.plotly_chart(fig_occupation_stress, use_container_width=True)
 
 #--------- Tab 4: Treatment & Care ---------
 with tab4:
     st.header("Treatment & Care")
 
-    # Family History vs Treatment
+    # Family History of Mental Illness vs Seeking Treatment (Stacked Bar Chart)
     response_by_family_history = df_selection.groupby(["family_history", "treatment"]).size().reset_index(name="Total_Responses")
     fig_family_history = px.bar(response_by_family_history,
-                                x="family_history",
-                                y="Total_Responses",
+                                x="family_history", y="Total_Responses",
                                 color="treatment",
-                                title="Family History of Mental Illness and Seeking Treatment Correlation",
-                                labels={"family_history": "Family History of Mental Illness", 
-                                        "treatment": "Seeking Treatment",
-                                        "Total_Responses": "Number of Respondents"},
+                                title="Correlation Between Family History of Mental Illness and Seeking Treatment",
+                                labels={"family_history": "Family History of Mental Illness", "treatment": "Seeking Treatment", "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
     st.plotly_chart(fig_family_history, use_container_width=True)
 
-    # Seeking treatment vs gender
+    # Seeking Treatment vs Gender (Stacked Bar Chart)
     response_by_gender_treatment = df_selection.groupby(["Gender", "treatment"]).size().reset_index(name="Total_Responses")
-    fig_gender_treatment = px.bar(response_by_gender_treatment,
-                                  x="Gender",
-                                  y="Total_Responses",
+    fig_gender_treatment = px.bar(response_by_gender_treatment, 
+                                  x="Gender", y="Total_Responses",
                                   color="treatment",
-                                  title="Gender Distribution of Mental Health Treatment",
+                                  title="Correlation between Gender and Mental Health Treatment",
                                   labels={"Gender": "Gender", "Total_Responses": "Number of Respondents"},
                                   barmode="stack")
     st.plotly_chart(fig_gender_treatment, use_container_width=True)
