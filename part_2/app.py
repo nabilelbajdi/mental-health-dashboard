@@ -91,6 +91,20 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([":bar_chart: Overview", ":busts_in_silho
 with tab1:
     st.header("Overview")
 
+    # Overall Statistics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Total Responses", df_selection.shape[0])
+    with col2:
+        st.metric("Countries Represented", df_selection["Country"].nunique())
+    with col3:
+        st.metric("Occupations", df_selection["Occupation"].nunique() - 1)
+    with col4:
+        st.metric("Years Covered", f"{df_selection['Year'].min()} - {df_selection['Year'].max()}")
+
+    st.divider()
+
     # Data Preview
     with st.expander("Data Preview"):
         st.dataframe(
