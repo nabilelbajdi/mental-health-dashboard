@@ -163,7 +163,7 @@ with tab2:
     fig_treatment = px.bar(response_by_treatment,
                            x="treatment", y="Total_Responses",
                            title="Treatment STatus Distribution",
-                           labels={"treatment": "Treatment Status", "Total_Responses": "Number of Respondents"})
+                           labels={"treatment": "Treatment", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_treatment, use_container_width=True)
 
     # Days Indoors Distribution (Bar chart)
@@ -286,17 +286,17 @@ with tab3:
 with tab4:
     st.header("Treatment & Care")
 
-    # Family History of Mental Illness vs Seeking Treatment (Stacked Bar Chart)
+    # Family History of Mental Illness vs Treatment (Stacked Bar Chart)
     response_by_family_history = df_selection.groupby(["family_history", "treatment"]).size().reset_index(name="Total_Responses")
     fig_family_history = px.bar(response_by_family_history,
                                 x="family_history", y="Total_Responses",
                                 color="treatment",
-                                title="Correlation Between Family History of Mental Illness and Seeking Treatment",
-                                labels={"family_history": "Family History of Mental Illness", "treatment": "Seeking Treatment", "Total_Responses": "Number of Respondents"},
+                                title="Correlation Between Family History of Mental Illness and Treatment",
+                                labels={"family_history": "Family History of Mental Illness", "treatment": "Treatment", "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
     st.plotly_chart(fig_family_history, use_container_width=True)
 
-    # Seeking Treatment vs Gender (Stacked Bar Chart)
+    # Treatment vs Gender (Stacked Bar Chart)
     response_by_gender_treatment = df_selection.groupby(["Gender", "treatment"]).size().reset_index(name="Total_Responses")
     fig_gender_treatment = px.bar(response_by_gender_treatment, 
                                   x="Gender", y="Total_Responses",
