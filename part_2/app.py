@@ -158,6 +158,22 @@ with tab2:
                         labels={"treatment": "Treatment Status", "Total_Responses": "Number of Respondents"})
     st.plotly_chart(fig_treatment, use_container_width=True)
 
+    # Days Indoors Distribution (Bar chart)
+    response_by_days_indoors = df_selection.groupby("Days_Indoors").size().reset_index(name="Total_Responses")
+    fig_days_indoors = px.bar(response_by_days_indoors,
+                            x="Days_Indoors", y="Total_Responses",
+                            title="Days Indoors Distribution",
+                            labels={"Days_Indoors": "Days Indoors", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_days_indoors, use_container_width=True)
+
+    # Habit Changes Distribution (Bar chart)
+    response_by_changes_habits = df_selection.groupby("Changes_Habits").size().reset_index(name="Total_Responses")
+    fig_changes_habits = px.bar(response_by_changes_habits,
+                                x="Changes_Habits", y="Total_Responses",
+                                title="Habit Changes Distribution",
+                                labels={"Changes_Habits": "Changes in Habits", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_changes_habits, use_container_width=True)
+
 #--------- Tab 3: Mental Health Insight ---------
 with tab3:
     st.header("Mental Health Insight")
