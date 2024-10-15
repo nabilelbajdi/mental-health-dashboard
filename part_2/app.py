@@ -85,7 +85,7 @@ df["care_options"] = df["care_options"].replace("Not sure", "Maybe")
 
 #------------ Visualization ------------
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Demographics", "Mental Health Insights", "Treatment and Care", "Work and Stress"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs([":bar_chart: Overview", ":busts_in_silhouette: Demographics", ":medical_symbol: Mental Health Insights", ":briefcase: Work-Related Insights", ":pill: Treatment and Care"])
 
 #--------- Tab 1: Overview ---------
 with tab1:
@@ -261,8 +261,46 @@ with tab3:
                                     title="Correlation Between Family History and Mood Swings")
     st.plotly_chart(fig_family_mood_swings, use_container_width=True)
 
-#--------- Tab 4: Treatment and Care ---------
+#--------- Tab 4: Work-Related Insights ---------
 with tab4:
+    st.header("Overview")    
+    
+    # Occupation Distribution (Bar Chart)
+    response_by_occupation = df_selection.groupby("Occupation").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
+    fig_occupation = px.bar(response_by_occupation,
+                            x="Occupation", y="Total_Responses",
+                            title="Occupation Distribution",
+                            labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_occupation, use_container_width=True)
+
+    # Self-Employment Distribution (Bar Chart)
+    df_filtered = df_selection[df_selection["self_employed"] != "Not specified"]
+    response_by_self_employment = df_filtered.groupby("self_employed").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
+    fig_self_employed = px.bar(response_by_self_employment,
+                               x="self_employed", y="Total_Responses",
+                               title="Self-Employment Distribution",
+                               labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_self_employed, use_container_width=True)
+
+    # Work Interest Distribution (Bar chart)
+    response_by_work_interest = df_selection.groupby("Work_Interest").size().reset_index(name="Total_Responses")
+    fig_work_interest = px.bar(response_by_work_interest,
+                            x="Work_Interest", y="Total_Responses",
+                            title="Work Interest Distribution",
+                            labels={"Work_Interest": "Work Interest", "Total_Responses": "Number of Respondents"})
+    st.plotly_chart(fig_work_interest, use_container_width=True)
+
+    # Occupations with the Highest Stress Levels (Horizontal Bar Chart)
+    response_by_occupation_stress = df_selection[df_selection["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
+    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
+    fig_occupation_stress = px.bar(response_by_occupation_stress,
+                                   x="Total_Responses", y="Occupation",
+                                   title="Occupations with the Highest Stress Levels",
+                                   labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
+    st.plotly_chart(fig_occupation_stress, use_container_width=True)
+
+#--------- Tab 5: Treatment and Care ---------
+with tab5:
     st.header("Treatment and Care")
 
     # Treatment Status Distribution (Bar chart)
@@ -320,42 +358,3 @@ with tab4:
                                 labels={"family_history": "Family History of Mental Illness", "treatment": "Treatment", "Total_Responses": "Number of Respondents"},
                                 barmode="stack")
     st.plotly_chart(fig_family_history, use_container_width=True)
-
-
-#--------- Tab 5: Work and Stress ---------
-with tab5:
-    st.header("Overview")    
-    
-    # Occupation Distribution (Bar Chart)
-    response_by_occupation = df_selection.groupby("Occupation").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
-    fig_occupation = px.bar(response_by_occupation,
-                            x="Occupation", y="Total_Responses",
-                            title="Occupation Distribution",
-                            labels={"Occupation": "Occupation", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_occupation, use_container_width=True)
-
-    # Self-Employment Distribution (Bar Chart)
-    df_filtered = df_selection[df_selection["self_employed"] != "Not specified"]
-    response_by_self_employment = df_filtered.groupby("self_employed").size().reset_index(name="Total_Responses").sort_values(by="Total_Responses", ascending=False)
-    fig_self_employed = px.bar(response_by_self_employment,
-                               x="self_employed", y="Total_Responses",
-                               title="Self-Employment Distribution",
-                               labels={"self_employed": "Self-Employment Status", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_self_employed, use_container_width=True)
-
-    # Work Interest Distribution (Bar chart)
-    response_by_work_interest = df_selection.groupby("Work_Interest").size().reset_index(name="Total_Responses")
-    fig_work_interest = px.bar(response_by_work_interest,
-                            x="Work_Interest", y="Total_Responses",
-                            title="Work Interest Distribution",
-                            labels={"Work_Interest": "Work Interest", "Total_Responses": "Number of Respondents"})
-    st.plotly_chart(fig_work_interest, use_container_width=True)
-
-    # Occupations with the Highest Stress Levels (Horizontal Bar Chart)
-    response_by_occupation_stress = df_selection[df_selection["Growing_Stress"] == "Yes"].groupby("Occupation").size().reset_index(name="Total_Responses")
-    response_by_occupation_stress = response_by_occupation_stress.sort_values(by="Total_Responses", ascending=True)
-    fig_occupation_stress = px.bar(response_by_occupation_stress,
-                                   x="Total_Responses", y="Occupation",
-                                   title="Occupations with the Highest Stress Levels",
-                                   labels={"Total_Responses": "Number of Respondents", "Occupation": "Occupation"})
-    st.plotly_chart(fig_occupation_stress, use_container_width=True)
