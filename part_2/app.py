@@ -6,7 +6,7 @@ import pandas as pd
 st.set_page_config(
     page_title="Mental Health Dataset Analysis",
     layout="wide",
-    page_icon="brain"
+    page_icon="favicon.png"
 )
 
 # Load Mental Health Dataset
@@ -73,7 +73,7 @@ df_selection = df[
     ]
 
 # Title and Description
-st.title("Mental Health Dataset Analysis :brain:")
+st.title("Mental Health Dataset Analysis")
 st.write("""
 Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insights across various factors such as gender, country and occupation.
 Use the tabs below to navigate through different sections.
@@ -85,7 +85,7 @@ df["care_options"] = df["care_options"].replace("Not sure", "Maybe")
 
 #------------ Visualization ------------
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs([":bar_chart: Overview", ":busts_in_silhouette: Demographics", ":bulb: Mental Health Insights", ":briefcase: Work-Related Insights", ":pill: Treatment and Care"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs([":bar_chart: Overview", ":earth_africa: Demographics", ":brain: Mental Health Insights", ":briefcase: Work-Related Insights", ":pill: Treatment and Care"])
 
 #--------- Tab 1: Overview ---------
 with tab1:
