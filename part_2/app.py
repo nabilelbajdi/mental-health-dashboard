@@ -108,15 +108,6 @@ with tab1:
 
     st.divider()
 
-    # Data Preview
-    with st.expander("Data Preview"):
-        st.dataframe(
-            df,
-            column_config={
-                "Year": st.column_config.NumberColumn(format="%d")
-            },
-        )
-
     # Participation By Year Over Time (Line Chart)
     response_by_year = df.groupby("Year").size().reset_index(name="Total_Responses")
 
