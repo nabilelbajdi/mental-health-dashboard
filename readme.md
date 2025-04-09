@@ -2,6 +2,10 @@
 
 An interactive data visualization tool built with Streamlit and Plotly that analyzes mental health survey data to uncover demographic patterns and insights.
 
+## Live Demo
+
+Try the live dashboard here: [Mental Health Dashboard](https://mental-health-dashboard.streamlit.app)
+
 ## Project Overview
 
 This dashboard analyzes a comprehensive mental health dataset to identify trends and patterns in mental health experiences across different demographics, regions, and occupations. The interactive dashboard allows users to filter data by various parameters and explore visualizations that reveal insights about:

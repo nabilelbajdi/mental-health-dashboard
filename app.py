@@ -75,7 +75,7 @@ df_selection = df[
 # Title and Description
 st.title("Mental Health Dashboard")
 st.write("""
-Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insights across various factors such as gender, country and occupation.
+Welcome to this interactive dashboard analyzing mental health data. Explore demographics and mental health insights across various factors such as gender, country and occupation.
 Use the tabs below to navigate through different sections.
 """)
 
