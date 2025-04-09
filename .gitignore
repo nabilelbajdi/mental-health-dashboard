@@ -1,4 +1,15 @@
-venv
-env
-*pycache*
+# Python environments
+venv/
+env/
 .env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Project specific folders
+archive/

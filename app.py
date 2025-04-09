@@ -4,7 +4,7 @@ import pandas as pd
 
 # Page Configuration
 st.set_page_config(
-    page_title="Mental Health Dataset Analysis",
+    page_title="Mental Health Dashboard",
     layout="wide",
     page_icon="favicon.png"
 )
@@ -12,7 +12,7 @@ st.set_page_config(
 # Load Mental Health Dataset
 @st.cache_data
 def load_data():
-    df = pd.read_csv("Mental Health Dataset.csv")
+    df = pd.read_csv("mental_health_dataset.csv")
     df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce") 
     df["Hour"] = pd.to_datetime(df["Timestamp"]).dt.hour
     df["Month"] = pd.to_datetime(df["Timestamp"]).dt.month
@@ -73,7 +73,7 @@ df_selection = df[
     ]
 
 # Title and Description
-st.title("Mental Health Dataset Analysis")
+st.title("Mental Health Dashboard")
 st.write("""
 Welcome to our interactive dashboard analyzing mental health data. Explore demographics and mental health insights across various factors such as gender, country and occupation.
 Use the tabs below to navigate through different sections.
@@ -419,7 +419,7 @@ with tab5:
                                     labels={"care_options": "Care Options", "Total_Responses": "Number of Respondents"})
     
     st.plotly_chart(fig_care_options, use_container_width=True)
-    st.caption("This map highlights access to mental health care options by country. It helps identify regions with better access to care and areas where care might be lacking. It’s important to note that some countries may have mixed responses, so this reflects the dominant opinion, not all opinions.")
+    st.caption("This map highlights access to mental health care options by country. It helps identify regions with better access to care and areas where care might be lacking. It's important to note that some countries may have mixed responses, so this reflects the dominant opinion, not all opinions.")
     st.divider()
 
     # Gender vs Treatment (Stacked Bar Chart)
